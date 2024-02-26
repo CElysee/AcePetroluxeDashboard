@@ -294,34 +294,7 @@ function AddNewCustomer() {
                         </select>
                       </div>
                     </div>
-                    <div className="mt-5 block flex-col pt-5 first:mt-0 first:pt-0 sm:flex xl:flex-row xl:items-center">
-                      <div className="mb-2 inline-block sm:mb-0 sm:mr-5 sm:text-right xl:mr-14 xl:w-60">
-                        <div className="text-left">
-                          <div className="flex items-center">
-                            <div className="font-medium">Status</div>
-                            <div className="ml-2.5 rounded-md border border-slate-200 bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-darkmode-300 dark:text-slate-400">
-                              Required
-                            </div>
-                          </div>
-                          <div className="mt-1.5 text-xs leading-relaxed text-slate-500/80 xl:mt-3">
-                            Select status
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-3 w-full flex-1 xl:mt-0">
-                        <select
-                          onChange={(e) => handleChange(e)}
-                          required
-                          name="status"
-                          value={status}
-                          className="disabled:bg-slate-100 disabled:cursor-not-allowed disabled:dark:bg-darkmode-800/50 [&amp;[readonly]]:bg-slate-100 [&amp;[readonly]]:cursor-not-allowed [&amp;[readonly]]:dark:bg-darkmode-800/50 transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md py-2 px-3 pr-8 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 group-[.form-inline]:flex-1"
-                        >
-                          <option value="">Select status</option>
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
-                      </div>
-                    </div>
+                 
                   </div>
                   <div className="mt-2 text-xs text-red-800">{error}</div>
                   <div className="flex border-t border-slate-200/80 px-7 py-5 md:justify-end">

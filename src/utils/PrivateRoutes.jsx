@@ -7,7 +7,7 @@ const PrivateRoutes = ({ children }) => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   if (!isAuthenticated) {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to="/login" replace />;
   }
   return children;
 };

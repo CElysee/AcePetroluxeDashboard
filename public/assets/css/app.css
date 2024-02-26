@@ -8629,7 +8629,7 @@ select {
 
 .before\:from-theme-1\/80:before {
   content: var(--tw-content);
-  --tw-gradient-from: rgb(252 237 35);
+  --tw-gradient-from: rgb(185 169 145);
   /* --tw-gradient-from: rgb(var(--color-theme-1) / .8) var(--tw-gradient-from-position); */
   --tw-gradient-to: rgb(var(--color-theme-1) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
@@ -9717,13 +9717,13 @@ select {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }
 .group.top-bar--active .group-\[\.top-bar--active\]\:from-theme-1 {
-    --tw-gradient-from: rgb(240 91 34);
+  --tw-gradient-to: rgb(165 159 139);
   /* --tw-gradient-from: rgb(var(--color-theme-1) / 1) var(--tw-gradient-from-position); */
   --tw-gradient-to: rgb(var(--color-theme-1) / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 .group.top-bar--active .group-\[\.top-bar--active\]\:to-theme-2 {
-    --tw-gradient-to: rgb(240 91 34);
+  --tw-gradient-to: rgb(165 159 139);
   /* --tw-gradient-to: rgb(var(--color-theme-2) / 1) var(--tw-gradient-to-position); */
 }
 .group.primary .group-\[\.primary\]\:fill-primary\/10 {

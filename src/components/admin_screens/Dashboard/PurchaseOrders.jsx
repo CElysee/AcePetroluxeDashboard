@@ -3,27 +3,55 @@ import TopMenu from "../TopMenu";
 import SideMenu from "../SideMenu";
 import AddNewOrder from "./Modals/AddNewOrder";
 import axiosInstance from "../../../utils/axiosInstance";
+import EditOrder from "./Modals/EditOrder";
+import OrderItemsList from "./Modals/OrderItemsList";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function PurchaseOrders() {
-  const [allVendors, setAllVendors] = useState([]);
-  const [vendorCount, setVendorCount] = useState(0);
+  const [allOrders, SetAllOrders] = useState("");
+  const [ordersCount, setOrdersCount] = useState("");
   const [userRefresh, setUserRefresh] = useState(false);
-  const imageBaseUrl = import.meta.env.VITE_REACT_APP_API;
+  const [orderId, setOrderId] = useState("");
 
   useEffect(() => {
     const fetchAllUsers = async () => {
       try {
-        const response = await axiosInstance.get("/vendor/all");
-        const vendorCountResponse = await axiosInstance.get("/vendor/count");
+        const allOrders = await axiosInstance.get("/purchaseOrder/all");
+        const countResponse = await axiosInstance.get("/purchaseOrder/count");
         // console.log(response.data);
-        setAllVendors(response.data);
-        setVendorCount(vendorCountResponse.data);
+        SetAllOrders(allOrders.data);
+        setOrdersCount(countResponse.data);
       } catch (error) {
         console.error(error);
       }
     };
     fetchAllUsers();
   }, [userRefresh]);
+  const handleDeleteOrder = async (id) => {
+    alert("Are you sure you want to delete this order?");
+    try {
+      const response = await axiosInstance.delete(
+        `/purchaseOrder/delete?id=${id}`
+      );
+      console.log(response);
+      setUserRefresh(true);
+      notify("Order deleted successfully", "success");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const notify = (message, type) => {
+    if (type === "success") {
+      toast.success(message, {
+        icon: "👏",
+      });
+    } else if (type === "error") {
+      toast.error(message, {
+        icon: "😬",
+      });
+    }
+  };
   return (
     <>
       <TopMenu />
@@ -39,7 +67,7 @@ function PurchaseOrders() {
                       Order
                     </div>
                     <div className="flex flex-col gap-x-3 gap-y-2 sm:flex-row md:ml-auto">
-                      <AddNewOrder />
+                      <AddNewOrder userRefresh={setUserRefresh} />
                     </div>
                   </div>
                   <div className="mt-3.5 flex flex-col gap-8">
@@ -50,7 +78,7 @@ function PurchaseOrders() {
                             Registered Orders
                           </div>
                           <div className="mt-1.5 text-2xl font-medium">
-                            {vendorCount.vendor_count}
+                            {ordersCount.purchase_order}
                           </div>
                           <div className="absolute inset-y-0 right-0 mr-5 flex flex-col justify-center">
                             <div className="flex items-center rounded-full border border-danger/10 bg-danger/10 py-[2px] pl-[7px] pr-1 text-xs font-medium text-danger">
@@ -67,7 +95,7 @@ function PurchaseOrders() {
                             Pending Orders
                           </div>
                           <div className="mt-1.5 text-2xl font-medium">
-                            {vendorCount.active_vendor}
+                            {ordersCount.pending_orders}
                           </div>
                           <div className="absolute inset-y-0 right-0 mr-5 flex flex-col justify-center">
                             <div className="flex items-center rounded-full border border-success/10 bg-success/10 py-[2px] pl-[7px] pr-1 text-xs font-medium text-success">
@@ -84,7 +112,7 @@ function PurchaseOrders() {
                             Approved Orders
                           </div>
                           <div className="font-mediumm mt-1.5 text-2xl">
-                            {vendorCount.recently_added_vendor}
+                            {ordersCount.approved_orders}
                           </div>
                           <div className="absolute inset-y-0 right-0 mr-5 flex flex-col justify-center">
                             <div className="flex items-center rounded-full border border-danger/10 bg-danger/10 py-[2px] pl-[7px] pr-1 text-xs font-medium text-danger">
@@ -101,7 +129,7 @@ function PurchaseOrders() {
                             Canceled Orders
                           </div>
                           <div className="font-mediumm mt-1.5 text-2xl">
-                            {vendorCount.recently_added_vendor}
+                            {ordersCount.cancelled_orders}
                           </div>
                           <div className="absolute inset-y-0 right-0 mr-5 flex flex-col justify-center">
                             <div className="flex items-center rounded-full border border-danger/10 bg-danger/10 py-[2px] pl-[7px] pr-1 text-xs font-medium text-danger">
@@ -248,16 +276,16 @@ function PurchaseOrders() {
                                 />
                               </td>
                               <td className="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
-                                Name
+                                Order number
                               </td>
                               <td className="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
-                                Phone number
+                                Vendor
                               </td>
                               <td className="px-5 border-b dark:border-darkmode-300 w-52 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
-                                Email
+                                Customer Name
                               </td>
                               <td className="px-5 border-b dark:border-darkmode-300 w-52 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
-                                Address
+                                Items
                               </td>
                               <td className="px-5 border-b dark:border-darkmode-300 w-52 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
                                 Date Created
@@ -265,14 +293,17 @@ function PurchaseOrders() {
                               <td className="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
                                 Status
                               </td>
+                              <td className="px-5 border-b dark:border-darkmode-300 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
+                                Export
+                              </td>
                               <td className="px-5 border-b dark:border-darkmode-300 w-20 border-t border-slate-200/60 bg-slate-50 py-4 text-center font-medium text-slate-500">
                                 Action
                               </td>
                             </tr>
                           </thead>
                           <tbody>
-                            {allVendors.length > 0 &&
-                              allVendors.map((vendor, index) => (
+                            {allOrders.length > 0 &&
+                              allOrders.map((order, index) => (
                                 <tr className="last:border-b-0" key={index}>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                     <input
@@ -282,21 +313,12 @@ function PurchaseOrders() {
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 w-80 border-dashed py-4 dark:bg-darkmode-600">
                                     <div className="flex items-center">
-                                      <div className="image-fit zoom-in h-9 w-9">
-                                        <img
-                                          data-placement="top"
-                                          title="Leonardo DiCaprio"
-                                          src={`${imageBaseUrl}/vendorLogo/${vendor.vendor_logo}`}
-                                          alt={vendor.first_name}
-                                          className="tooltip cursor-pointer rounded-full shadow-[0px_0px_0px_2px_#fff,_1px_1px_5px_rgba(0,0,0,0.32)] dark:shadow-[0px_0px_0px_2px_#3f4865,_1px_1px_5px_rgba(0,0,0,0.32)]"
-                                        />
-                                      </div>
                                       <div className="ml-3.5">
                                         <a
                                           className="whitespace-nowrap font-medium"
                                           href=""
                                         >
-                                          {vendor.vendor_name}
+                                          {order.order.po_number}
                                         </a>
                                       </div>
                                     </div>
@@ -306,7 +328,7 @@ function PurchaseOrders() {
                                       className="whitespace-nowrap font-medium"
                                       href=""
                                     >
-                                      {vendor.vendor_email}
+                                      {order.vendor.vendor_name}
                                     </a>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
@@ -314,33 +336,57 @@ function PurchaseOrders() {
                                       className="whitespace-nowrap font-medium"
                                       href=""
                                     >
-                                      {vendor.vendor_contact_number}
+                                      {order.customer.customer_first_name}{" "}
+                                      {order.customer.customer_last_name}
                                     </a>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                     <div className="w-40">
+                                      <button
+                                        data-tw-merge
+                                        data-tw-toggle="modal"
+                                        data-tw-target="#superlarge-slide-over-size-preview"
+                                        onClick={() =>
+                                          setOrderId(order.order.id)
+                                        }
+                                        className="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"
+                                      >
+                                        <i
+                                          data-tw-merge=""
+                                          data-lucide="shopping-basket"
+                                          className="mr-2 h-4 w-4 stroke-[1.3]"
+                                        ></i>
+                                        Items
+                                      </button>
+                                    </div>
+                                  </td>
+                                  <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
+                                    <div className="w-40">
                                       <div className="text-xs text-slate-500">
-                                        {vendor.vendor_address}
+                                        {order.order.created_at}
                                       </div>
                                     </div>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                     <div className="w-40">
                                       <div className="text-xs text-slate-500">
-                                        {vendor.created_at}
+                                        {order.order.po_status}
                                       </div>
                                     </div>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
-                                    <div className="flex items-center justify-center text-success">
-                                      <i
-                                        data-lucide="database"
-                                        className="h-3.5 w-3.5 stroke-[1.7]"
-                                      ></i>
-                                      <div className="ml-1.5 whitespace-nowrap">
-                                        {vendor.status == true
-                                          ? "Inactive"
-                                          : "Active"}
+                                    <div className="w-40">
+                                      <div className="text-xs text-slate-500">
+                                      <button
+                                        className="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"
+                                      >
+                                        <i
+                                          data-tw-merge=""
+                                          data-lucide="download-cloud"
+                                          className="mr-2 h-4 w-4 stroke-[1.3]"
+                                        ></i>
+                                        Export
+                                      </button>
                                       </div>
                                     </div>
                                   </td>
@@ -372,14 +418,28 @@ function PurchaseOrders() {
                                           className="dropdown-menu absolute z-[9999] hidden"
                                         >
                                           <div className="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
-                                            <a className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item">
+                                            <a
+                                              data-tw-toggle="modal"
+                                              data-tw-target="#header-footer-modal-preview-editOrder"
+                                              onClick={() =>
+                                                setOrderId(order.order.id)
+                                              }
+                                              className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+                                            >
                                               <i
                                                 data-lucide="check-square"
                                                 className="stroke-[1] mr-2 h-4 w-4"
                                               ></i>
                                               Edit
                                             </a>
-                                            <a className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger">
+                                            <a
+                                              onClick={() => {
+                                                handleDeleteOrder(
+                                                  order.order.id
+                                                );
+                                              }}
+                                              className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger"
+                                            >
                                               <i
                                                 data-lucide="trash2"
                                                 className="stroke-[1] mr-2 h-4 w-4"
@@ -406,6 +466,8 @@ function PurchaseOrders() {
                       </div>
                     </div>
                   </div>
+                  <OrderItemsList orderId={orderId} />
+                  <EditOrder userRefresh={setUserRefresh} orderId={orderId} />
                 </div>
               </div>
             </div>

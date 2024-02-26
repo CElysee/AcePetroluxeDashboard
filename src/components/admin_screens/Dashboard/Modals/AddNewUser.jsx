@@ -181,7 +181,7 @@ function AddNewUser() {
                       <div className="mb-2 inline-block sm:mb-0 sm:mr-5 sm:text-right xl:mr-14 xl:w-60">
                         <div className="text-left">
                           <div className="flex items-center">
-                            <div className="font-medium">Role</div>
+                            <div className="font-medium">Gender</div>
                             <div className="ml-2.5 rounded-md border border-slate-200 bg-slate-100 px-2 py-0.5 text-xs text-slate-500 dark:bg-darkmode-300 dark:text-slate-400">
                               Required
                             </div>

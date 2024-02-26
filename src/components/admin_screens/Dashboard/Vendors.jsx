@@ -2,12 +2,16 @@ import React, { useEffect, useState } from "react";
 import TopMenu from "../TopMenu";
 import SideMenu from "../SideMenu";
 import AddNewVendor from "./Modals/AddNewVendor";
+import EditVendor from "./Modals/EditVendor";
 import axiosInstance from "../../../utils/axiosInstance";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Vendors() {
   const [allVendors, setAllVendors] = useState([]);
   const [vendorCount, setVendorCount] = useState(0);
   const [userRefresh, setUserRefresh] = useState(false);
+  const [vendorId, setVendorId] = useState("");
   const imageBaseUrl = import.meta.env.VITE_REACT_APP_API;
 
   useEffect(() => {
@@ -24,8 +28,30 @@ function Vendors() {
     };
     fetchAllUsers();
   }, [userRefresh]);
+  const handleVendorDelete = async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/vendor/delete?vendor_id=${id}`);
+      // console.log(response.data);
+      setUserRefresh(true);
+      notify(response.data.message, "success");
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const notify = (message, type) => {
+    if (type === "success") {
+      toast.success(message, {
+        icon: "👏",
+      });
+    } else if (type === "error") {
+      toast.error(message, {
+        icon: "😬",
+      });
+    }
+  };
   return (
     <>
+      <ToastContainer autoClose={5000} />
       <TopMenu />
       <div className="echo group bg-gradient-to-b from-slate-200/70 to-slate-50 background relative min-h-screen before:content-[''] before:h-[370px] before:w-screen before:bg-gradient-to-t before:from-theme-1/80 before:to-theme-2 [&.background--hidden]:before:opacity-0 before:transition-[opacity,height] before:ease-in-out before:duration-300 before:top-0 before:fixed after:content-[''] after:h-[370px] after:w-screen [&.background--hidden]:after:opacity-0 after:transition-[opacity,height] after:ease-in-out after:duration-300 after:top-0 after:fixed after:bg-texture-white after:bg-contain after:bg-fixed after:bg-[center_-13rem] after:bg-no-repeat">
         <SideMenu />
@@ -289,7 +315,7 @@ function Vendors() {
                                       className="whitespace-nowrap font-medium"
                                       href=""
                                     >
-                                      {vendor.vendor_email}
+                                      {vendor.vendor_contact_number}
                                     </a>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
@@ -297,7 +323,7 @@ function Vendors() {
                                       className="whitespace-nowrap font-medium"
                                       href=""
                                     >
-                                      {vendor.vendor_contact_number}
+                                      {vendor.vendor_email}
                                     </a>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
@@ -355,14 +381,26 @@ function Vendors() {
                                           className="dropdown-menu absolute z-[9999] hidden"
                                         >
                                           <div className="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
-                                            <a className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item">
+                                            <a
+                                              data-tw-toggle="modal"
+                                              data-tw-target="#header-footer-modal-preview-editVendor"
+                                              onClick={() =>
+                                                setVendorId(vendor.id)
+                                              }
+                                              className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+                                            >
                                               <i
                                                 data-lucide="check-square"
                                                 className="stroke-[1] mr-2 h-4 w-4"
                                               ></i>
                                               Edit
                                             </a>
-                                            <a className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger">
+                                            <a
+                                              onClick={() =>
+                                                handleVendorDelete(vendor.id)
+                                              }
+                                              className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger"
+                                            >
                                               <i
                                                 data-lucide="trash2"
                                                 className="stroke-[1] mr-2 h-4 w-4"
@@ -389,6 +427,10 @@ function Vendors() {
                       </div>
                     </div>
                   </div>
+                  <EditVendor
+                    vendorId={vendorId}
+                    setUserRefresh={setUserRefresh}
+                  />
                 </div>
               </div>
             </div>

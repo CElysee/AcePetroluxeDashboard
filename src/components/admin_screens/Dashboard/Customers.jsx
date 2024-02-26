@@ -3,11 +3,15 @@ import TopMenu from "../TopMenu";
 import SideMenu from "../SideMenu";
 import AddNewCustomer from "./Modals/AddNewCustomer";
 import axiosInstance from "../../../utils/axiosInstance";
+import EditCustomer from "./Modals/EditCustomer";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Customers() {
   const [allCustomers, setAllCustomers] = useState([]);
   const [customerCount, setCustomerCount] = useState(0);
   const [userRefresh, setUserRefresh] = useState(false);
+  const [customerId, setCustomerId] = useState("");
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -23,8 +27,29 @@ function Customers() {
     };
     fetchAllUsers();
   }, [userRefresh]);
+  const deleteCustomer = async (id) => {
+    try {
+      const response = await axiosInstance.delete(`/customer/delete?customer_id=${id}`);
+      setUserRefresh(true);
+      notify(response.data.message, "success");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const notify = (message, type) => {
+    if (type === "success") {
+      toast.success(message, {
+        icon: "👏",
+      });
+    } else if (type === "error") {
+      toast.error(message, {
+        icon: "😬",
+      });
+    }
+  };
   return (
     <>
+      <ToastContainer autoClose={5000} />
       <TopMenu />
       <div className="echo group bg-gradient-to-b from-slate-200/70 to-slate-50 background relative min-h-screen before:content-[''] before:h-[370px] before:w-screen before:bg-gradient-to-t before:from-theme-1/80 before:to-theme-2 [&.background--hidden]:before:opacity-0 before:transition-[opacity,height] before:ease-in-out before:duration-300 before:top-0 before:fixed after:content-[''] after:h-[370px] after:w-screen [&.background--hidden]:after:opacity-0 after:transition-[opacity,height] after:ease-in-out after:duration-300 after:top-0 after:fixed after:bg-texture-white after:bg-contain after:bg-fixed after:bg-[center_-13rem] after:bg-no-repeat">
         <SideMenu />
@@ -269,7 +294,8 @@ function Customers() {
                                           className="whitespace-nowrap font-medium"
                                           href=""
                                         >
-                                          {customer.customer_first_name} {customer.customer_last_name}
+                                          {customer.customer_first_name}{" "}
+                                          {customer.customer_last_name}
                                         </a>
                                       </div>
                                     </div>
@@ -287,20 +313,20 @@ function Customers() {
                                       className="whitespace-nowrap font-medium"
                                       href=""
                                     >
-                                     {customer.customer_email}
+                                      {customer.customer_email}
                                     </a>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                     <div className="w-40">
                                       <div className="text-xs text-slate-500">
-                                      {customer.customer_address}
+                                        {customer.customer_address}
                                       </div>
                                     </div>
                                   </td>
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                     <div className="w-40">
                                       <div className="text-xs text-slate-500">
-                                      {customer.created_at}
+                                        {customer.created_at}
                                       </div>
                                     </div>
                                   </td>
@@ -311,7 +337,7 @@ function Customers() {
                                         className="h-3.5 w-3.5 stroke-[1.7]"
                                       ></i>
                                       <div className="ml-1.5 whitespace-nowrap">
-                                      {customer.customer_status == true
+                                        {customer.customer_status == true
                                           ? "Inactive"
                                           : "Active"}
                                       </div>
@@ -345,14 +371,26 @@ function Customers() {
                                           className="dropdown-menu absolute z-[9999] hidden"
                                         >
                                           <div className="dropdown-content rounded-md border-transparent bg-white p-2 shadow-[0px_3px_10px_#00000017] dark:border-transparent dark:bg-darkmode-600 w-40">
-                                            <a className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item">
+                                            <a
+                                              data-tw-toggle="modal"
+                                              data-tw-target="#header-footer-modal-preview-editCustomer"
+                                              onClick={() =>
+                                                setCustomerId(customer.id)
+                                              }
+                                              className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item"
+                                            >
                                               <i
                                                 data-lucide="check-square"
                                                 className="stroke-[1] mr-2 h-4 w-4"
                                               ></i>
                                               Edit
                                             </a>
-                                            <a className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger">
+                                            <a
+                                              onClick={() =>
+                                                deleteCustomer(customer.id)
+                                              }
+                                              className="cursor-pointer flex items-center p-2 transition duration-300 ease-in-out rounded-md hover:bg-slate-200/60 dark:bg-darkmode-600 dark:hover:bg-darkmode-400 dropdown-item text-danger"
+                                            >
                                               <i
                                                 data-lucide="trash2"
                                                 className="stroke-[1] mr-2 h-4 w-4"
@@ -379,6 +417,10 @@ function Customers() {
                       </div>
                     </div>
                   </div>
+                  <EditCustomer
+                    customerId={customerId}
+                    userRefresh={setUserRefresh}
+                  />
                 </div>
               </div>
             </div>

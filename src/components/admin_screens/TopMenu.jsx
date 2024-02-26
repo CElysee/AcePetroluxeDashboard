@@ -27,17 +27,6 @@ function TopMenu() {
             </a>
           </div>
         </div>
-        <div
-          className="fixed bottom-0 right-0 z-50 mb-5 mr-5 flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-theme-1 text-white shadow-lg"
-          data-tw-toggle="modal"
-          data-tw-target="#theme-switcher"
-        >
-          <i
-            data-tw-merge=""
-            data-lucide="settings"
-            className="stroke-[1] w-5 h-5 animate-spin"
-          ></i>
-        </div>
       </div>
     </>
   );
