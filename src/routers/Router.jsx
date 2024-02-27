@@ -8,6 +8,7 @@ import Register from "../components/auth/Register";
 import Vendors from "../components/admin_screens/Dashboard/Vendors";
 import PurchaseOrders from "../components/admin_screens/Dashboard/PurchaseOrders";
 import PrivateRoutes from "../utils/PrivateRoutes.jsx";
+import PurchaseOrderInvoice from "../components/admin_screens/Dashboard/PurchaseOrderInvoice.jsx";
 
 function Router() {
   return (
@@ -51,6 +52,14 @@ function Router() {
         element={
           <PrivateRoutes>
             <PurchaseOrders />
+          </PrivateRoutes>
+        }
+      />
+      <Route
+        path="/admin/purchase-orders-invoice/:id"
+        element={
+          <PrivateRoutes>
+            <PurchaseOrderInvoice />
           </PrivateRoutes>
         }
       />

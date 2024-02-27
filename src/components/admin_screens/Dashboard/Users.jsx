@@ -272,8 +272,8 @@ function Users() {
                           </div>
                         </div>
                       </div>
-                      <div className="overflow-auto xl:overflow-visible">
-                        <table className="w-full text-left border-b border-slate-200/60">
+                      <div className="overflow-x-auto">
+                        <table data-tw-merge className="w-full text-left">
                           <thead className="">
                             <tr className="">
                               <td className="px-5 border-b dark:border-darkmode-300 w-5 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">

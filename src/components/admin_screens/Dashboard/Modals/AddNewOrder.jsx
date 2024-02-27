@@ -12,12 +12,13 @@ const override = {
   paddingRight: "10px",
 };
 
-function AddNewOrder({userRefresh}) {
+function AddNewOrder({ userRefresh }) {
   const [vendorId, setVendorId] = useState("");
   const [customerId, setCustomerId] = useState("");
   const [orderStatus, setOrderStatus] = useState("");
   const [vendors, SetVendors] = useState("");
   const [customers, SetCustomers] = useState("");
+  const [po_additional_notes, setPo_additional_notes] = useState("");
   const [error, setError] = useState("");
   const [color, setColor] = useState("#fff");
   const [loading, setLoading] = useState(false);
@@ -73,7 +74,9 @@ function AddNewOrder({userRefresh}) {
       case "orderStatus":
         setOrderStatus(value);
         break;
-
+      case "po_additional_notes":
+        setPo_additional_notes(value);
+        break;
       default:
         break;
     }
@@ -92,6 +95,7 @@ function AddNewOrder({userRefresh}) {
       po_customer_id: customerId,
       po_status: orderStatus,
       itemList: itemList,
+      po_additional_notes: po_additional_notes,
     };
     console.log(params);
     const submitItems = async () => {
@@ -392,6 +396,27 @@ function AddNewOrder({userRefresh}) {
                         </div>
                       </div>
                     ))}
+                    <div className="mt-5 block flex-col pt-5 first:mt-0 first:pt-0 sm:flex xl:flex-row xl:items-center">
+                      <div className="mb-2 inline-block sm:mb-0 sm:mr-5 sm:text-right xl:mr-14 xl:w-60">
+                        <div className="text-left">
+                          <div className="flex items-center">
+                            <div className="font-medium">Additional Note</div>
+                          </div>
+                          <div className="mt-1.5 text-xs leading-relaxed text-slate-500/80 xl:mt-3">
+                            Please provide correct additional note
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-3 w-full flex-1 xl:mt-0">
+                        <textarea
+                          name="po_additional_notes"
+                          rows={4}
+                          value={po_additional_notes}
+                          onChange={handleChange}
+                          className=" transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md placeholder:text-slate-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40    "
+                        ></textarea>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex border-t border-slate-200/80 px-7 py-5 md:justify-end">

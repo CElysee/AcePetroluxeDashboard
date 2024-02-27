@@ -7,12 +7,14 @@ import EditOrder from "./Modals/EditOrder";
 import OrderItemsList from "./Modals/OrderItemsList";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useParams } from "react-router-dom";
 
 function PurchaseOrders() {
   const [allOrders, SetAllOrders] = useState("");
   const [ordersCount, setOrdersCount] = useState("");
   const [userRefresh, setUserRefresh] = useState(false);
   const [orderId, setOrderId] = useState("");
+  
 
   useEffect(() => {
     const fetchAllUsers = async () => {
@@ -22,6 +24,7 @@ function PurchaseOrders() {
         // console.log(response.data);
         SetAllOrders(allOrders.data);
         setOrdersCount(countResponse.data);
+        setUserRefresh(false);
       } catch (error) {
         console.error(error);
       }
@@ -265,8 +268,8 @@ function PurchaseOrders() {
                           </div>
                         </div>
                       </div>
-                      <div className="overflow-auto xl:overflow-visible">
-                        <table className="w-full text-left border-b border-slate-200/60">
+                      <div className="overflow-x-auto">
+                        <table data-tw-merge className="w-full text-left">
                           <thead className="">
                             <tr className="">
                               <td className="px-5 border-b dark:border-darkmode-300 w-5 border-t border-slate-200/60 bg-slate-50 py-4 font-medium text-slate-500">
@@ -377,16 +380,14 @@ function PurchaseOrders() {
                                   <td className="px-5 border-b dark:border-darkmode-300 border-dashed py-4 dark:bg-darkmode-600">
                                     <div className="w-40">
                                       <div className="text-xs text-slate-500">
-                                      <button
-                                        className="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1"
-                                      >
-                                        <i
-                                          data-tw-merge=""
-                                          data-lucide="download-cloud"
-                                          className="mr-2 h-4 w-4 stroke-[1.3]"
-                                        ></i>
-                                        Export
-                                      </button>
+                                        <a href={`/admin/purchase-orders-invoice/${order.order.id}`} className="transition duration-200 border shadow-sm inline-flex items-center justify-center py-2 px-3 rounded-md font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary mb-2 mr-1 mb-2 mr-1">
+                                          <i
+                                            data-tw-merge=""
+                                            data-lucide="download-cloud"
+                                            className="mr-2 h-4 w-4 stroke-[1.3]"
+                                          ></i>
+                                          Export
+                                        </a>
                                       </div>
                                     </div>
                                   </td>
