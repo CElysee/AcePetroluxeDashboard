@@ -22,6 +22,7 @@ function Vendors() {
         // console.log(response.data);
         setAllVendors(response.data);
         setVendorCount(vendorCountResponse.data);
+        userRefresh(false);
       } catch (error) {
         console.error(error);
       }
@@ -65,7 +66,7 @@ function Vendors() {
                       Vendors
                     </div>
                     <div className="flex flex-col gap-x-3 gap-y-2 sm:flex-row md:ml-auto">
-                      <AddNewVendor />
+                      <AddNewVendor userRefresh={setUserRefresh} />
                     </div>
                   </div>
                   <div className="mt-3.5 flex flex-col gap-8">

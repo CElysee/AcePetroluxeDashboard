@@ -21,6 +21,7 @@ function Customers() {
         // console.log(response.data);
         setAllCustomers(response.data);
         setCustomerCount(vendorCountResponse.data);
+        userRefresh(false);
       } catch (error) {
         console.error(error);
       }
@@ -63,7 +64,7 @@ function Customers() {
                       Costumers
                     </div>
                     <div className="flex flex-col gap-x-3 gap-y-2 sm:flex-row md:ml-auto">
-                      <AddNewCustomer />
+                      <AddNewCustomer  userRefresh={setUserRefresh} />
                     </div>
                   </div>
                   <div className="mt-3.5 flex flex-col gap-8">

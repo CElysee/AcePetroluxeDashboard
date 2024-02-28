@@ -12,7 +12,7 @@ const override = {
   paddingRight: "10px",
 };
 
-function AddNewCustomer() {
+function AddNewCustomer({ userRefresh }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -92,6 +92,7 @@ function AddNewCustomer() {
         notify(response.data.message, "success");
         setLoading(false);
         dismissButtonRef.current.click();
+        userRefresh(true);
       } catch (error) {
         console.log(error);
         setLoading(false);

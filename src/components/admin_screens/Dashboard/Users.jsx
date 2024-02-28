@@ -28,6 +28,7 @@ function Users() {
         // console.log(response.data);
         setAllUsers(response.data);
         setUserCount(userCountResponse.data);
+        userRefresh(false);
       } catch (error) {
         console.error(error);
       }
@@ -40,7 +41,7 @@ function Users() {
         `/auth/delete?user_id=${user_id}`
       );
       // console.log(response.data);
-      setUserRefresh(!userRefresh);
+      setUserRefresh(true);
       notify(response.data.message, "success");
     } catch (error) {
       console.error(error);
@@ -73,7 +74,7 @@ function Users() {
                       Users
                     </div>
                     <div className="flex flex-col gap-x-3 gap-y-2 sm:flex-row md:ml-auto">
-                      <AddNewUser setUserRefresh={setUserRefresh} />
+                      <AddNewUser userRefresh={setUserRefresh} />
                     </div>
                   </div>
 
