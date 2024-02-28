@@ -54,7 +54,8 @@ function Login() {
         // console.log(user_login.data);
         setLoading(false);
         if (user_login.data.role === "admin") {
-          navigate("/admin/dashboard");
+          // navigate("/admin/dashboard");
+          window.location.replace('/admin/dashboard');
         } else if (user_login.data.role === "user") {
           navigate("/user/dashboard");
         }

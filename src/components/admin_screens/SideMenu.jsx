@@ -9,8 +9,8 @@ function SideMenu() {
 
   const handleLogout = () => {
     alert("You are about to logout");
-    // dispatch(logout()); // dispatch logout action
-    // navigate("/sign-in");
+    dispatch(logout()); // dispatch logout action
+    navigate("/login");
   };
   return (
     <>

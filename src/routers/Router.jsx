@@ -11,6 +11,11 @@ import PrivateRoutes from "../utils/PrivateRoutes.jsx";
 import PurchaseOrderInvoice from "../components/admin_screens/Dashboard/PurchaseOrderInvoice.jsx";
 
 function Router() {
+  var perfEntries = performance.getEntriesByType("navigation");
+
+  if (perfEntries[0].type === "back_forward") {
+      location.reload();
+  }
   return (
     <Routes>
       <Route path="/" element={<Login />} />
