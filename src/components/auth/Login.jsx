@@ -55,17 +55,16 @@ function Login() {
         setLoading(false);
         if (user_login.data.role === "admin") {
           // navigate("/admin/dashboard");
-          window.location.replace('/admin/dashboard');
+          window.location.replace("/admin/dashboard");
         } else if (user_login.data.role === "user") {
           navigate("/user/dashboard");
         }
-
       } catch (error) {
         console.error("Error:", error);
         setError(error.response.data.detail);
         setLoading(false);
       }
-    }
+    };
     submitLogin();
   };
   return (
@@ -81,12 +80,6 @@ function Login() {
               />
             </div>
             <div className="mt-10">
-              <div className="mt-2.5 text-slate-600">
-                Don't have an account?
-                <Link className="font-medium text-primary" to={"/register"}>
-                  Sign Up
-                </Link>
-              </div>
               <form className="mt-8" onSubmit={handleLogin}>
                 <div
                   role="alert"
