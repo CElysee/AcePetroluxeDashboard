@@ -5,13 +5,21 @@ import "../../App.css";
 import axiosInstance from "../../utils/axiosInstance";
 import { useDispatch } from "react-redux";
 import { login } from "../../assets/features/auth/authSlice";
+import RiseLoader from "react-spinners/RiseLoader";
 
+const override = {
+  display: "block",
+  margin: "0 auto",
+  borderColor: "#e55812",
+  paddingRight: "10px",
+};
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
+  const [color, setColor] = useState("#fff");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -168,7 +176,19 @@ function Login() {
                       disabled={isDisabled}
                       className="transition duration-200 border shadow-sm inline-flex items-center justify-center px-3 font-medium cursor-pointer focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus-visible:outline-none dark:focus:ring-slate-700 dark:focus:ring-opacity-50 [&:hover:not(:disabled)]:bg-opacity-90 [&:hover:not(:disabled)]:border-opacity-90 [&:not(button)]:text-center disabled:opacity-70 disabled:cursor-not-allowed bg-primary border-primary text-white dark:border-primary rounded-full w-full bg-gradient-to-r from-theme-1/70 to-theme-2/70 py-3.5 xl:mr-3"
                     >
-                      Sign In
+                      {loading ? (
+                        <RiseLoader
+                          color={color}
+                          loading={loading}
+                          cssOverride={override}
+                          size={10}
+                          aria-label="Loading Spinner"
+                          data-testid="loader"
+                        />
+                      ) : (
+                        "Sign In"
+                      )}
+                      
                     </button>
                   </div>
                 </div>

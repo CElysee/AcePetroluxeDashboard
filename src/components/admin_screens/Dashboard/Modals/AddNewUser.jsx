@@ -285,8 +285,8 @@ function AddNewUser({ userRefresh }) {
                           className="disabled:bg-slate-100 disabled:cursor-not-allowed disabled:dark:bg-darkmode-800/50 [&amp;[readonly]]:bg-slate-100 [&amp;[readonly]]:cursor-not-allowed [&amp;[readonly]]:dark:bg-darkmode-800/50 transition duration-200 ease-in-out w-full text-sm border-slate-200 shadow-sm rounded-md py-2 px-3 pr-8 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-slate-700 dark:focus:ring-opacity-50 group-[.form-inline]:flex-1"
                         >
                           <option value="">Select role</option>
-                          <option value="Admin">Admin</option>
-                          <option value="User">User</option>
+                          <option value="admin">Admin</option>
+                          <option value="user">User</option>
                         </select>
                       </div>
                     </div>
